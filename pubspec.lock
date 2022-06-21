@@ -15,6 +15,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bottom_bar_with_sheet:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: e0727b86af1858c40e1779406b15214ee36c9c79
+      url: "git@github.com:mhsuab/bottom_bar_with_sheet.git"
+    source: git
+    version: "2.4.0"
   characters:
     dependency: transitive
     description:
