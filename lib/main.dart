@@ -1,7 +1,10 @@
-import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
+import 'package:sports/ifsc/ranking/ranking.dart';
 import 'package:sports/nav_bar/navbar.dart';
+import 'package:sports/ifsc/discipline/discipline.dart';
+
+import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:sports/nav_bar/single_bottom_navbar.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(const MyApp());
 
@@ -12,11 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          colorSchemeSeed: const Color(0xff1b2839),
+          useMaterial3: true,
+          textTheme: GoogleFonts.ubuntuMonoTextTheme()),
+      home: const MyHomePage(title: 'title'),
     );
   }
 }
@@ -34,21 +37,20 @@ class _MyHomePageState extends State<MyHomePage> {
   final _bottomController = BottomBarWithSheetController(initialIndex: 0);
   final _ifscNavBar = const CustomBottomNavBar(
     items: [
-      BottomBarWithSheetItem(icon: Icons.home_rounded, label: 'live'),
-      BottomBarWithSheetItem(icon: Icons.home_rounded, label: 'home'),
-      BottomBarWithSheetItem(icon: Icons.settings),
-      BottomBarWithSheetItem(icon: Icons.favorite),
-      BottomBarWithSheetItem(icon: Icons.bar_chart_sharp),
+      BottomBarWithSheetItem(icon: Icons.event, label: 'events'),
+      BottomBarWithSheetItem(icon: Icons.leaderboard, label: 'ranking'),
+      BottomBarWithSheetItem(icon: Icons.groups, label: 'athletes'),
+      BottomBarWithSheetItem(icon: Icons.bookmark, label: 'followed'),
     ],
     logoImgPath: 'assets/ifsc/logo.png',
     bottomBarTheme: BottomBarTheme(
-      selectedItemTextStyle: TextStyle(color: Color(0xff01a2e4)),
-      itemTextStyle: TextStyle(color: Colors.white),
+      selectedItemTextStyle: TextStyle(color: Color(0xff01a2e4), fontSize: 12),
+      itemTextStyle: TextStyle(color: Colors.white, fontSize: 12),
       height: 80,
       heightClosed: 80,
       heightOpened: 500,
       mainButtonPosition: MainButtonPosition.right,
-      selectedItemIconColor: Color(0xff01a2e4),
+      selectedItemIconColor: Color(0xffe6007e),
       itemIconColor: Colors.white,
       decoration: BoxDecoration(
         color: Color(0xff1b2839),
@@ -62,7 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(child: Text("Hello Worqwer3 qwer ld")),
+      body: RankingPage(items: const <Discipline>[
+        Discipline.general,
+        Discipline.boulder,
+        Discipline.lead,
+        Discipline.speed,
+      ]),
       bottomNavigationBar: CustomSingleBottomNavBar(
         sheetChild: Center(
           child: Text(
