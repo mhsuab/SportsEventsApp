@@ -1,18 +1,18 @@
-library single_bottom_navbar;
+library collection_bottom_navbar;
 
 import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
-import 'package:sports/nav_bar/custom_bottom_navbar.dart';
+import 'package:sports/utils/utils.dart';
 
-class CustomSingleBottomNavBar extends StatefulWidget {
-  CustomSingleBottomNavBar({
+class BottomBarCollection extends StatefulWidget {
+  BottomBarCollection({
     Key? key,
-    required this.navbar,
-    this.sheetChild,
+    required this.collection,
+    // this.sheetChild,
     this.onSelectItem,
-    this.controller,
+    BottomBarWithSheetController? controller,
   })  : _controller = (controller ??
             BottomBarWithSheetController(
               initialIndex: 0,
@@ -24,26 +24,27 @@ class CustomSingleBottomNavBar extends StatefulWidget {
   final Duration duration = const Duration(milliseconds: 700);
   final Curve curve = Curves.fastOutSlowIn;
 
-  final CustomBottomNavBar navbar;
-  final Widget? sheetChild;
+  // final List<BaseBottomBar> collection;
+  final Map<SportSwitch, SportData> collection;
+  // final Widget? sheetChild;
   final Function(int)? onSelectItem;
-  final BottomBarWithSheetController? controller;
   late final BottomBarWithSheetController _controller;
 
-  final int sportIndex = 0;
-  // final int _tabIndex = 0;
+  final _sportController = StreamController<SportSwitch>.broadcast();
+  Stream<SportSwitch> get sportController => _sportController.stream;
 
   @override
-  _CustomSingleBottomNavBarState createState() =>
-      _CustomSingleBottomNavBarState();
+  // ignore: library_private_types_in_public_api
+  _BottomBarCollectionState createState() => _BottomBarCollectionState();
 }
 
-class _CustomSingleBottomNavBarState extends State<CustomSingleBottomNavBar>
+class _BottomBarCollectionState extends State<BottomBarCollection>
     with SingleTickerProviderStateMixin {
   late AnimationController _arrowAnimationController;
   late Animation _arrowAnimation;
   late bool _isOpened;
   late StreamSubscription _sub;
+  late SportSwitch currentSport;
 
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _CustomSingleBottomNavBarState extends State<CustomSingleBottomNavBar>
         Tween(begin: 0.0, end: 1.0).animate(_arrowAnimationController);
     _isOpened = widget._controller.isOpened;
     _configBottomControllerListener();
+    currentSport = widget.collection.keys.first;
     super.initState();
   }
 
@@ -63,8 +65,8 @@ class _CustomSingleBottomNavBarState extends State<CustomSingleBottomNavBar>
       duration: widget.duration,
       curve: widget.curve,
       height: _bottomBarHeigth,
-      padding: widget.navbar.bottomBarTheme.contentPadding,
-      decoration: widget.navbar.bottomBarTheme.decoration,
+      padding: widget.collection[currentSport]!.bottomBarTheme.contentPadding,
+      decoration: widget.collection[currentSport]!.bottomBarTheme.decoration,
       child: Column(
         children: <Widget>[
           Row(
@@ -72,7 +74,26 @@ class _CustomSingleBottomNavBarState extends State<CustomSingleBottomNavBar>
             children: _generateItems(),
           ),
           _isOpened
-              ? Expanded(child: widget.sheetChild ?? const SizedBox())
+              ? Expanded(
+                  child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemCount: widget.collection.length,
+                  itemBuilder: (context, idx) {
+                    SportSwitch sport = widget.collection.keys.elementAt(idx);
+                    return ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            currentSport = sport;
+                            widget._sportController.add(currentSport);
+                            widget._controller.selectItem(0);
+                            widget._controller.closeSheet();
+                          });
+                        },
+                        child: Text(sport.name));
+                  },
+                ))
               : const SizedBox()
         ],
       ),
@@ -87,32 +108,44 @@ class _CustomSingleBottomNavBarState extends State<CustomSingleBottomNavBar>
   List<Widget> _generateItems() {
     return ItemsGenerator.generateByButtonPosition(
       mainActionButton: MainActionButton(
-        rotationPortion: 0.05,
+        rotationPortion: 0,
         onTap: () {
           _changeWidgetState();
         },
         // button: widget.mainActionButtonBuilder?.call(context),
         mainActionButtonTheme: MainActionButtonTheme(
+            splash: ((widget.collection[currentSport]!.bottomBarTheme
+                            .selectedItemTextStyle?.color ??
+                        Theme.of(context)
+                            .bottomNavigationBarTheme
+                            .selectedLabelStyle
+                            ?.color))
+                    ?.withAlpha(50) ??
+                Colors.transparent,
             size: 65,
             color: Colors.transparent,
             icon: CircleAvatar(
               radius: 25.0,
-              backgroundImage: AssetImage(widget.navbar.logoImgPath),
+              backgroundImage:
+                  AssetImage(widget.collection[currentSport]!.logo),
             )),
         arrowAnimation: _arrowAnimation,
         arrowAnimationController: _arrowAnimationController,
         enable: true,
       ),
-      items: widget.navbar.items
+      items: widget.collection[currentSport]!.items
           .asMap()
           .map(
             (i, e) => MapEntry(
               i,
               BottmBarItemController(
                 index: i,
-                model: e,
+                model: BottomBarWithSheetItem(
+                    icon: e.icon,
+                    label: e.label,
+                    disabled: e.disabled ?? false),
                 controller: widget._controller,
-                theme: widget.navbar.bottomBarTheme,
+                theme: widget.collection[currentSport]!.bottomBarTheme,
               ),
             ),
           )
@@ -139,7 +172,7 @@ class _CustomSingleBottomNavBarState extends State<CustomSingleBottomNavBar>
   }
 
   double get _bottomBarHeigth {
-    final t = widget.navbar.bottomBarTheme;
+    final t = widget.collection[currentSport]!.bottomBarTheme;
     return _isOpened ? t.heightOpened : t.heightClosed;
   }
 }
