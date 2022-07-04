@@ -1,19 +1,46 @@
 import 'package:flutter/material.dart';
 
-enum Discipline { general, boulder, lead, speed }
+enum Discipline { combined, boulder, lead, speed }
 
 class DisciplineData {
   final Color color;
   final String name;
+  final int men;
+  final int women;
 
-  const DisciplineData({required this.color, required this.name});
+  const DisciplineData({
+    required this.color,
+    required this.name,
+    required this.men,
+    required this.women,
+  });
 }
 
 const Map<Discipline, DisciplineData> disciplineMapping = {
-  Discipline.general: DisciplineData(color: Color(0xFFAA9342), name: 'General'),
-  Discipline.boulder: DisciplineData(color: Color(0xFF1782BB), name: 'Boulder'),
-  Discipline.lead: DisciplineData(color: Color(0xFF00C462), name: 'Lead'),
-  Discipline.speed: DisciplineData(color: Color(0xFFFF8438), name: 'Speed'),
+  Discipline.combined: DisciplineData(
+    color: Color(0xFFAA9342),
+    name: 'Combined',
+    men: 4,
+    women: 8,
+  ),
+  Discipline.boulder: DisciplineData(
+    color: Color(0xFF1782BB),
+    name: 'Boulder',
+    men: 3,
+    women: 7,
+  ),
+  Discipline.lead: DisciplineData(
+    color: Color(0xFF00C462),
+    name: 'Lead',
+    men: 2,
+    women: 6,
+  ),
+  Discipline.speed: DisciplineData(
+    color: Color(0xFFFF8438),
+    name: 'Speed',
+    men: 1,
+    women: 5,
+  ),
 };
 
 class DisciplineDisplay extends StatelessWidget {
@@ -62,23 +89,27 @@ class DisciplineDisplay extends StatelessWidget {
                   ),
                 )),
             ElevatedButton(
-                onPressed: onPressed,
-                onLongPress: onLongPressed,
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  onPrimary: disciplineMapping[selected]!.color,
-                  fixedSize: const Size(100, 40),
-                ),
-                child: Text(
-                  disciplineMapping[selected]!.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold, shadows: [
+              onPressed: onPressed,
+              onLongPress: onLongPressed,
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onPrimary: disciplineMapping[selected]!.color,
+                fixedSize: const Size(100, 40),
+              ),
+              child: Text(
+                disciplineMapping[selected]!.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  shadows: [
                     Shadow(
                         offset: Offset(2, 0.7),
                         blurRadius: 10,
                         color: Colors.black12)
-                  ]),
-                ))
+                  ],
+                ),
+              ),
+            )
           ],
         ));
   }

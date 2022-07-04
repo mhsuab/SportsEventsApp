@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'discipline_display.dart';
+import 'package:sports/ifsc/discipline/discipline_display.dart';
 
 class DisciplineButtonMenu extends StatefulWidget {
   const DisciplineButtonMenu({
@@ -12,8 +11,6 @@ class DisciplineButtonMenu extends StatefulWidget {
   // items: availavle item to switch between
   final List<Discipline> items;
   final Function(bool, int)? toggleUpdate;
-  // static const Curve curve = Curves.bounceOut;
-  // static const Curve reverseCurve = Curves.bounceIn;
 
   @override
   State<StatefulWidget> createState() => _DisciplineBottonMenuState();
