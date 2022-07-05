@@ -1,4 +1,4 @@
-import 'package:sports/base_single_page.dart';
+import 'package:sports/utils/base_single_page.dart';
 import 'package:sports/ifsc/pages/pages.dart';
 import 'package:flutter/material.dart';
 

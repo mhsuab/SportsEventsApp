@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sports/base_single_page.dart';
+import 'package:sports/utils/base_single_page.dart';
 
 import 'package:sports/ifsc/discipline/discipline.dart';
 import 'package:sports/ifsc/pages/pages.dart';

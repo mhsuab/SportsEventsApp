@@ -21,6 +21,8 @@ class BottomBarCollection extends StatefulWidget {
           ..onItemSelect = onSelectItem,
         super(key: key);
 
+  BottomBarWithSheetController get controller => _controller;
+
   final Duration duration = const Duration(milliseconds: 700);
   final Curve curve = Curves.fastOutSlowIn;
 
@@ -114,14 +116,9 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
         },
         // button: widget.mainActionButtonBuilder?.call(context),
         mainActionButtonTheme: MainActionButtonTheme(
-            splash: ((widget.collection[currentSport]!.bottomBarTheme
-                            .selectedItemTextStyle?.color ??
-                        Theme.of(context)
-                            .bottomNavigationBarTheme
-                            .selectedLabelStyle
-                            ?.color))
+            splash: widget.collection[currentSport]!.bottomBarTheme.splash
                     ?.withAlpha(50) ??
-                Colors.transparent,
+                Colors.black12,
             size: 65,
             color: Colors.transparent,
             icon: CircleAvatar(
@@ -141,9 +138,10 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
               BottmBarItemController(
                 index: i,
                 model: BottomBarWithSheetItem(
-                    icon: e.icon,
-                    label: e.label,
-                    disabled: e.disabled ?? false),
+                  icon: e.icon,
+                  label: e.label,
+                  disabled: e.disabled,
+                ),
                 controller: widget._controller,
                 theme: widget.collection[currentSport]!.bottomBarTheme,
               ),
