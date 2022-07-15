@@ -20,7 +20,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: e0727b86af1858c40e1779406b15214ee36c9c79
+      resolved-ref: e530489a23b3f24537e1a343755a954e2a11d21b
       url: "git@github.com:mhsuab/bottom_bar_with_sheet.git"
     source: git
     version: "2.4.0"
@@ -110,9 +110,9 @@ packages:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.3"
+    version: "3.0.1"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -153,6 +153,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -230,6 +237,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.3"
   sky_engine:
     dependency: transitive
     description: flutter
