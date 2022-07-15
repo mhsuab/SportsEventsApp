@@ -4,19 +4,32 @@ import 'package:flutter/material.dart';
 export 'base_single_page.dart';
 export 'bottom_bar_collection.dart';
 export 'switch.dart';
+export 'custom_page.dart';
+export 'constants.dart';
 
-enum SportSwitch { ifsc, wimbledon }
+enum SportSwitch {
+  ifsc,
+  wimbledon,
+  ifsc1,
+  ifsc2,
+  ifsc3,
+  ifsc4,
+  ifsc5,
+}
 
 class SportTab {
   final IconData icon;
   final Widget page;
   final bool disabled;
+  final bool isTab;
   final String? label;
+  List<Page>? pages;
 
-  const SportTab({
+  SportTab({
     required this.icon,
     this.page = const SizedBox(),
     this.disabled = false,
+    this.isTab = true,
     this.label,
   });
 }
@@ -27,6 +40,8 @@ class SportData {
   final String logo;
   final List<SportTab> items;
   final String? baseUrl;
+  final String abbr;
+  final String name;
 
   SportData({
     required this.theme,
@@ -41,6 +56,8 @@ class SportData {
     Color? disabledIcon,
     Color? disabledText,
     Color? splash,
+    required this.abbr,
+    required this.name,
   }) : bottomBarTheme = BottomBarTheme(
           selectedItemIconColor: selectedIcon,
           selectedItemTextStyle: TextStyle(color: selectedText, fontSize: 12),
@@ -49,9 +66,6 @@ class SportData {
           disabledItemIconColor: disabledIcon ?? Colors.white38,
           disabledItemTextStyle:
               TextStyle(color: disabledText ?? Colors.white38),
-          height: 80,
-          heightClosed: 80,
-          heightOpened: 270, // height of icons/labels & sheet
           mainButtonPosition: MainButtonPosition.right,
           decoration: BoxDecoration(
             color: background,

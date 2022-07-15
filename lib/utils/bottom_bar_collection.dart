@@ -10,7 +10,6 @@ class BottomBarCollection extends StatefulWidget {
   BottomBarCollection({
     Key? key,
     required this.collection,
-    // this.sheetChild,
     this.onSelectItem,
     BottomBarWithSheetController? controller,
   })  : _controller = (controller ??
@@ -23,12 +22,7 @@ class BottomBarCollection extends StatefulWidget {
 
   BottomBarWithSheetController get controller => _controller;
 
-  final Duration duration = const Duration(milliseconds: 700);
-  final Curve curve = Curves.fastOutSlowIn;
-
-  // final List<BaseBottomBar> collection;
   final Map<SportSwitch, SportData> collection;
-  // final Widget? sheetChild;
   final Function(int)? onSelectItem;
   late final BottomBarWithSheetController _controller;
 
@@ -52,7 +46,7 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
   void initState() {
     super.initState();
     _arrowAnimationController =
-        AnimationController(vsync: this, duration: widget.duration);
+        AnimationController(vsync: this, duration: animationDuration);
     _arrowAnimation =
         Tween(begin: 0.0, end: 1.0).animate(_arrowAnimationController);
     _isOpened = widget._controller.isOpened;
@@ -64,9 +58,10 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: widget.duration,
-      curve: widget.curve,
+      duration: animationDuration,
+      curve: Curves.fastOutSlowIn,
       height: _bottomBarHeigth,
+      width: MediaQuery.of(context).size.width,
       padding: widget.collection[currentSport]!.bottomBarTheme.contentPadding,
       decoration: widget.collection[currentSport]!.bottomBarTheme.decoration,
       child: Column(
@@ -77,23 +72,34 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
           ),
           _isOpened
               ? Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
+                  separatorBuilder: ((context, index) => Divider(
+                        color: widget.collection[currentSport]!.bottomBarTheme
+                            .itemIconColor,
+                        height: 2.0,
+                      )),
+                  padding: EdgeInsets.zero,
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
                   itemCount: widget.collection.length,
                   itemBuilder: (context, idx) {
                     SportSwitch sport = widget.collection.keys.elementAt(idx);
-                    return ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            currentSport = sport;
-                            widget._sportController.add(currentSport);
-                            widget._controller.selectItem(0);
-                            widget._controller.closeSheet();
-                          });
-                        },
-                        child: Text(sport.name));
+                    return BottomBarSheetItem(
+                      logo: widget.collection[sport]!.logo,
+                      title: widget.collection[sport]!.abbr,
+                      subtitle: widget.collection[sport]!.name,
+                      titleColor: widget.collection[currentSport]!
+                          .bottomBarTheme.itemTextStyle?.color,
+                      onTap: () {
+                        setState(() {
+                          currentSport = sport;
+                          widget._sportController.add(currentSport);
+                          widget._controller.selectItem(0);
+                          widget._controller.closeSheet();
+                        });
+                      },
+                    );
                   },
                 ))
               : const SizedBox()
@@ -109,26 +115,28 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
 
   List<Widget> _generateItems() {
     return ItemsGenerator.generateByButtonPosition(
-      mainActionButton: MainActionButton(
-        rotationPortion: 0,
-        onTap: () {
-          _changeWidgetState();
-        },
-        // button: widget.mainActionButtonBuilder?.call(context),
-        mainActionButtonTheme: MainActionButtonTheme(
-            splash: widget.collection[currentSport]!.bottomBarTheme.splash
-                    ?.withAlpha(50) ??
-                Colors.black12,
-            size: 65,
-            color: Colors.transparent,
-            icon: CircleAvatar(
-              radius: 25.0,
-              backgroundImage:
-                  AssetImage(widget.collection[currentSport]!.logo),
-            )),
-        arrowAnimation: _arrowAnimation,
-        arrowAnimationController: _arrowAnimationController,
-        enable: true,
+      mainActionButton: IgnorePointer(
+        ignoring: (widget.collection.length <= 1),
+        child: MainActionButton(
+          rotationPortion: 0.01,
+          onTap: () {
+            _changeWidgetState();
+          },
+          mainActionButtonTheme: MainActionButtonTheme(
+              splash: widget.collection[currentSport]!.bottomBarTheme.splash
+                      ?.withAlpha(50) ??
+                  Colors.black12,
+              size: 65,
+              color: Colors.transparent,
+              icon: CircleAvatar(
+                radius: 25.0,
+                backgroundImage:
+                    AssetImage(widget.collection[currentSport]!.logo),
+              )),
+          arrowAnimation: _arrowAnimation,
+          arrowAnimationController: _arrowAnimationController,
+          enable: true,
+        ),
       ),
       items: widget.collection[currentSport]!.items
           .asMap()
@@ -144,6 +152,7 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
                 ),
                 controller: widget._controller,
                 theme: widget.collection[currentSport]!.bottomBarTheme,
+                disabled: _isOpened,
               ),
             ),
           )
@@ -170,7 +179,43 @@ class _BottomBarCollectionState extends State<BottomBarCollection>
   }
 
   double get _bottomBarHeigth {
-    final t = widget.collection[currentSport]!.bottomBarTheme;
-    return _isOpened ? t.heightOpened : t.heightClosed;
+    return bottomTileHeight *
+        (_isOpened ? (widget.collection.length == 2 ? 3.7 : 3.2) : 1);
+  }
+}
+
+class BottomBarSheetItem extends StatelessWidget {
+  const BottomBarSheetItem({
+    Key? key,
+    required this.logo,
+    required this.title,
+    this.titleColor,
+    required this.subtitle,
+    required this.onTap,
+  }) : super(key: key);
+
+  final String logo;
+  final String title;
+  final Color? titleColor;
+  final String subtitle;
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: bottomTileHeight,
+      child: Center(
+        child: ListTile(
+          leading: CircleAvatar(
+            radius: 20.0,
+            backgroundImage: AssetImage(logo),
+          ),
+          title: Text(title),
+          textColor: titleColor,
+          subtitle: Text(subtitle),
+          onTap: onTap,
+        ),
+      ),
+    );
   }
 }
