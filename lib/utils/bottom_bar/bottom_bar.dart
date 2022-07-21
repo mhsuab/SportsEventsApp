@@ -1,12 +1,11 @@
-library bottom_bar;
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:sports/utils/utils.dart';
 
-import 'bottom_bar_button.dart';
-import 'bottom_bar_sheet_item.dart';
+import 'sheet.dart';
+import 'sport_button.dart';
+import 'tab.dart';
 
 class BottomBarCollection extends StatelessWidget {
   const BottomBarCollection({
@@ -34,7 +33,7 @@ class BottomBarCollection extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              BottomBarButton(
+              SportButton(
                 splash: pageManager.data.splash,
                 buttonImage: pageManager.data.logo,
                 onTap: () => Provider.of<PageManager>(context, listen: false)
@@ -44,53 +43,14 @@ class BottomBarCollection extends StatelessWidget {
               ...pageManager.data.items
                   .asMap()
                   .map(
-                    (i, e) => MapEntry(
-                      i,
-                      Expanded(
-                        child: InkWell(
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () {
-                            if (!pageManager.isOpened && !e.disabled) {
-                              Provider.of<PageManager>(context, listen: false)
-                                  .changeTab(i);
-                            }
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                e.icon,
-                                color: pageManager.isSelected(i)
-                                    ? pageManager.data.selectedIcon
-                                    : (e.disabled
-                                        ? pageManager.data.disabledIcon
-                                        : pageManager.data.icon),
-                                size: pageManager.isSelected(i) ? 24 : 22,
-                              ),
-                              ...[
-                                const SizedBox(height: 2),
-                                Text(e.label,
-                                    style: pageManager.isSelected(i)
-                                        ? TextStyle(
-                                            color:
-                                                pageManager.data.selectedText,
-                                            fontSize: 12)
-                                        : (e.disabled
-                                            ? TextStyle(
-                                                color: pageManager
-                                                    .data.disabledText,
-                                                fontSize: 12)
-                                            : TextStyle(
-                                                color: pageManager.data.text,
-                                                fontSize: 12)))
-                              ]
-                            ],
-                          ),
-                        ),
+                    (index, tab) => MapEntry(
+                      index,
+                      BottomBarTab(
+                        data: pageManager.data,
+                        tab: tab,
+                        index: index,
+                        isSelected: pageManager.isSelected(index),
+                        disabled: !pageManager.isOpened && !tab.disabled,
                       ),
                     ),
                   )
@@ -99,31 +59,7 @@ class BottomBarCollection extends StatelessWidget {
             ],
           ),
           pageManager.isOpened
-              ? Expanded(
-                  child: ListView.separated(
-                  separatorBuilder: ((context, index) => Divider(
-                        color: pageManager.data.icon,
-                        height: 2.0,
-                      )),
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  itemCount: sports.length,
-                  itemBuilder: (context, idx) {
-                    SportSwitch sport = sports.keys.elementAt(idx);
-                    return BottomBarSheetItem(
-                      logo: sports[sport]!.logo,
-                      title: sports[sport]!.abbr,
-                      subtitle: sports[sport]!.name,
-                      titleColor: pageManager.data.text,
-                      onTap: () {
-                        Provider.of<PageManager>(context, listen: false)
-                            .changeSport(sport);
-                      },
-                    );
-                  },
-                ))
+              ? BottomBarSheet(data: pageManager.data)
               : const SizedBox()
         ],
       ),

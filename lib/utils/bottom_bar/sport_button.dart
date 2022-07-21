@@ -1,15 +1,13 @@
-library bottom_bar_button;
-
 import 'package:flutter/material.dart';
 import 'package:sports/utils/utils.dart';
 
-class BottomBarButton extends StatelessWidget {
+class SportButton extends StatelessWidget {
   final Function() onTap;
   final Widget _button;
   final bool disabled;
   final Color _splash;
 
-  BottomBarButton({
+  SportButton({
     Key? key,
     required this.onTap,
     required String buttonImage,
@@ -22,7 +20,7 @@ class BottomBarButton extends StatelessWidget {
               height: bottomTileHeight * 0.6,
               child: Image.asset(buttonImage),
             ),
-        _splash = Colors.black12,
+        _splash = splash ?? Colors.black12,
         super(key: key);
 
   @override
