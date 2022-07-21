@@ -1,6 +1,7 @@
-import 'package:sports/utils/base_single_page.dart';
+import 'package:provider/provider.dart';
 import 'package:sports/ifsc/pages/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:sports/utils/utils.dart';
 
 class EventPage extends BaseSinglePage {
   EventPage({
@@ -21,18 +22,18 @@ class Event2Result extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: ElevatedButton(
-      onPressed: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => Ranking(title: "title")));
-        // Navigator.of(context).push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: ((context) => Ranking(
-        //               title: "Salt Lake City",
-        //             ))));
-      },
-      child: const Text("Salt Lake City"),
-    ));
+      child: ElevatedButton(
+        onPressed: () {
+          Provider.of<PageManager>(context, listen: false).push(
+            MaterialPage(
+              child: Ranking(
+                title: "trying...",
+              ),
+            ),
+          );
+        },
+        child: const Text("Salt Lake City"),
+      ),
+    );
   }
 }

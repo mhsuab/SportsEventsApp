@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class BaseSinglePage extends StatelessWidget {
+class BaseSinglePage extends StatelessWidget {
   final AppBar? appbar;
   final String? appbarTitle;
   final List<Widget>? appbarActions;

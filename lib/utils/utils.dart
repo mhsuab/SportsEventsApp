@@ -1,11 +1,12 @@
-import 'package:bottom_bar_with_sheet/bottom_bar_with_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:sports/utils/custom_page.dart';
 
 export 'base_single_page.dart';
-export 'bottom_bar_collection.dart';
+export 'bottom_bar/bottom_bar.dart';
 export 'switch.dart';
 export 'custom_page.dart';
 export 'constants.dart';
+export 'page_manager.dart';
 
 enum SportSwitch {
   ifsc,
@@ -19,60 +20,55 @@ enum SportSwitch {
 
 class SportTab {
   final IconData icon;
-  final Widget page;
   final bool disabled;
   final bool isTab;
-  final String? label;
-  List<Page>? pages;
+  final String label;
+  final Page _initPage;
+  GlobalKey<NavigatorState> navigator = GlobalKey<NavigatorState>();
 
   SportTab({
     required this.icon,
-    this.page = const SizedBox(),
+    required this.label,
     this.disabled = false,
     this.isTab = true,
-    this.label,
-  });
+    Widget child = const SizedBox(),
+  }) : _initPage = CustomPage(child: child);
+
+  Page get page => _initPage;
 }
 
 class SportData {
   final ThemeData theme;
-  final BottomBarTheme bottomBarTheme;
   final String logo;
   final List<SportTab> items;
   final String? baseUrl;
   final String abbr;
   final String name;
 
+  // bottom bar theme
+  final Color icon;
+  final Color text;
+  final Color selectedIcon;
+  final Color selectedText;
+  final Color background;
+  final Color? disabledIcon;
+  final Color? disabledText;
+  final Color? splash;
+
   SportData({
     required this.theme,
     required this.logo,
     required this.items,
     this.baseUrl,
-    required Color icon,
-    required Color text,
-    required Color selectedIcon,
-    required Color selectedText,
-    required Color background,
-    Color? disabledIcon,
-    Color? disabledText,
-    Color? splash,
+    required this.icon,
+    required this.text,
+    required this.selectedIcon,
+    required this.selectedText,
+    required this.background,
+    this.disabledIcon = Colors.white38,
+    this.disabledText = Colors.white38,
+    this.splash = Colors.black12,
     required this.abbr,
     required this.name,
-  }) : bottomBarTheme = BottomBarTheme(
-          selectedItemIconColor: selectedIcon,
-          selectedItemTextStyle: TextStyle(color: selectedText, fontSize: 12),
-          itemIconColor: icon,
-          itemTextStyle: TextStyle(color: text, fontSize: 12),
-          disabledItemIconColor: disabledIcon ?? Colors.white38,
-          disabledItemTextStyle:
-              TextStyle(color: disabledText ?? Colors.white38),
-          mainButtonPosition: MainButtonPosition.right,
-          decoration: BoxDecoration(
-            color: background,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(30.0),
-            ),
-          ),
-          splash: splash ?? Colors.black12,
-        );
+  });
 }

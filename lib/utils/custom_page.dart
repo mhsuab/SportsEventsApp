@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sports/utils/utils.dart';
 
@@ -67,5 +68,10 @@ class CustomPage<T> extends Page<T> {
       transitionsBuilder: ((context, animation, secondaryAnimation, child) =>
           _transition(context, animation, secondaryAnimation, child)),
     );
+  }
+
+  @override
+  String toString() {
+    return "($child, $name)";
   }
 }

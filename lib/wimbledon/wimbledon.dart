@@ -18,7 +18,7 @@ SportData wimbledon = SportData(
     SportTab(
       icon: Icons.add_box,
       label: 'add',
-      page: const BaseSinglePage(
+      child: const BaseSinglePage(
         page: Center(child: Text("add")),
         appbarTitle: 'add',
       ),
@@ -26,7 +26,7 @@ SportData wimbledon = SportData(
     SportTab(
       icon: Icons.qr_code,
       label: 'scan',
-      page: const BaseSinglePage(
+      child: const BaseSinglePage(
         page: Center(child: Text("scan")),
         appbarTitle: 'scan',
       ),
@@ -34,7 +34,12 @@ SportData wimbledon = SportData(
     SportTab(
       icon: Icons.event,
       label: 'events',
-      page: const BaseSinglePage(
+      disabled: true,
+    ),
+    SportTab(
+      icon: Icons.event,
+      label: 'events',
+      child: const BaseSinglePage(
         page: Center(child: Text("wimbledon")),
         appbarTitle: 'wimbledon',
       ),
@@ -45,5 +50,5 @@ SportData wimbledon = SportData(
   text: Colors.black,
   selectedIcon: const Color.fromARGB(255, 69, 222, 233),
   selectedText: const Color.fromARGB(255, 228, 122, 1),
-  splash: const Color.fromARGB(255, 1, 228, 43),
+  splash: const Color.fromARGB(128, 1, 228, 43),
 );
