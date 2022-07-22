@@ -40,10 +40,11 @@ class PageManager extends ChangeNotifier {
   }
 
   void changeSport(SportSwitch selectedSport) {
-    if (selectedSport == _currentSport) return;
-    resetPages();
-    _currentSport = selectedSport;
-    _currentIndex = 0;
+    if (selectedSport != _currentSport) {
+      resetPages();
+      _currentSport = selectedSport;
+      _currentIndex = 0;
+    }
     _isOpened = false;
     notifyListeners();
   }
