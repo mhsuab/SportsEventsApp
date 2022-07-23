@@ -42,12 +42,13 @@ class SportsApp extends StatelessWidget {
             bottom: bottomTileHeight,
             child: WillPopScope(
               child: Navigator(
-                  key: pageManager.tab.navigator,
-                  pages: pageManager.pages,
-                  onPopPage: (route, result) {
-                    Provider.of<PageManager>(context, listen: false).pop();
-                    return route.didPop(result);
-                  }),
+                key: pageManager.tab.navigator,
+                pages: pageManager.pages,
+                onPopPage: (route, result) {
+                  Provider.of<PageManager>(context, listen: false).pop();
+                  return route.didPop(result);
+                },
+              ),
               onWillPop: () async =>
                   pageManager.tab.navigator.currentState!.maybePop(),
             ),
