@@ -109,17 +109,14 @@ class _DisciplineBottonMenuState extends State<DisciplineButtonMenu> {
             onPressed: widget.items.length == 1
                 ? () {}
                 : () {
-                    setState(() {
-                      _selected = (_selected + 1) % widget.items.length;
-                    });
+                    setState(() =>
+                        _selected = (_selected + 1) % widget.items.length);
                     widget.toggleUpdate?.call(_isFemale, _selected);
                   },
             onLongPressed: widget.items.length == 1
                 ? () {}
                 : () {
-                    setState(() {
-                      _isOpened = true;
-                    });
+                    setState(() => _isOpened = true);
                   },
           );
   }

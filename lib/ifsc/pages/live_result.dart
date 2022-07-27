@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sports/utils/base_single_page.dart';
 
 import 'package:sports/ifsc/discipline/discipline.dart';
 import 'package:sports/ifsc/pages/pages.dart';
+import 'package:sports/utils/page_manager.dart';
 
 class Ranking extends BaseSinglePage {
   final String title;
@@ -59,10 +61,12 @@ class _ResultPageState extends State<ResultPage> {
           Positioned(
               top: 100,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => EventPage())));
-                },
+                onPressed: () =>
+                    Provider.of<PageManager>(context, listen: false).push(
+                  const MaterialPage(
+                    child: Athletes(),
+                  ),
+                ),
                 child: const Text("pushed"),
               )),
           Container(

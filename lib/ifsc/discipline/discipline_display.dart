@@ -8,7 +8,7 @@ class DisciplineData {
   final int men;
   final int women;
 
-  const DisciplineData({
+  DisciplineData({
     required this.color,
     required this.name,
     required this.men,
@@ -16,7 +16,7 @@ class DisciplineData {
   });
 }
 
-const Map<Discipline, DisciplineData> disciplineMapping = {
+Map<Discipline, DisciplineData> disciplineMapping = {
   Discipline.combined: DisciplineData(
     color: Color(0xFFAA9342),
     name: 'Combined',

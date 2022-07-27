@@ -1,4 +1,4 @@
-import 'package:sports/utils/base_single_page.dart';
+import 'package:sports/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class Athletes extends BaseSinglePage {

@@ -16,7 +16,7 @@ SportData ifsc = SportData(
   theme: theme,
   logo: 'assets/ifsc.png',
   items: [
-    SportTab(icon: Icons.event, label: 'events', child: EventPage()),
+    SportTab(icon: Icons.event, label: 'events', child: const EventPage()),
     SportTab(
         icon: Icons.leaderboard,
         label: 'ranking',
