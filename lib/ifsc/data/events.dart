@@ -47,12 +47,14 @@ class LeagueInfo {
 class Events {
   final int id;
   final String name;
+  final String? display;
   final String url;
   final DateTimeRange date;
   final List<Discipline> disciplines;
   final List<Event> round;
   const Events(
-      this.id, this.name, this.url, this.date, this.disciplines, this.round);
+      this.id, this.name, this.url, this.date, this.disciplines, this.round,
+      {this.display});
 
   factory Events.fromJson(Map<String, dynamic> json) {
     List<Event> localEvents = json['d_cats']
@@ -62,9 +64,10 @@ class Events {
     List<Discipline> localDisciplines =
         localEvents.map((e) => e.discipline).toSet().toList();
     localDisciplines.sort((a, b) => a.index.compareTo(b.index));
+    String name = json["event"].split("-").last.trim();
     return Events(
       json['event_id'],
-      json["event"].split(" - ").last,
+      name,
       json["url"],
       DateTimeRange(
         start: DateTime.parse(json['starts_at'].replaceAll('UTC', 'Z')),
@@ -72,6 +75,7 @@ class Events {
       ),
       localDisciplines,
       localEvents,
+      display: (name.length >= 25) ? "${name.substring(0, 22)}..." : name,
     );
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sports/ifsc/data/events.dart';
-import 'package:sports/ifsc/discipline/discipline.dart';
 import 'package:sports/utils/base_single_page.dart';
 
 class EventResultsPage extends BaseSinglePage {
@@ -9,14 +8,14 @@ class EventResultsPage extends BaseSinglePage {
     Events? events,
   }) : super(
           key: key,
-          appbarTitle: events?.name.split(' ')[0],
-          page: EventPage(events: events ?? Events.dummy()),
+          appbarTitle: events?.name.split(' (')[0],
+          page: EventResults(events: events ?? Events.dummy()),
         );
 }
 
-class EventPage extends StatelessWidget {
+class EventResults extends StatelessWidget {
   final Events events;
-  const EventPage({
+  const EventResults({
     Key? key,
     required this.events,
   }) : super(key: key);
