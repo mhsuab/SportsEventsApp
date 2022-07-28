@@ -17,20 +17,26 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late Widget display;
 
-  void _sportClick(SportSwitch selectedSport) {
-    setState(() {
+  void setToSports(SportSwitch selectedSport) =>
       display = ChangeNotifierProvider(
         create: (context) => PageManager(selectedSport: selectedSport),
         child: const SportsApp(),
       );
-    });
+  void setToHome() => display = HomePage(
+        onTap: (selectedSport) => _sportClick(selectedSport),
+      );
+
+  void _sportClick(SportSwitch selectedSport) {
+    setState(() => setToSports(selectedSport));
   }
 
   @override
   void initState() {
-    display = HomePage(
-      onTap: (selectedSport) => _sportClick(selectedSport),
-    );
+    if (sports.length == 1) {
+      setToSports(sports.keys.first);
+    } else {
+      setToHome();
+    }
     super.initState();
   }
 

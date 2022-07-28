@@ -1,4 +1,3 @@
 export 'athletes.dart';
-export 'events.dart';
-export 'event_results.dart';
+export 'events/events.dart';
 export 'live_result.dart';

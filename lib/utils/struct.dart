@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sports/ifsc/ifsc.dart';
 
 import 'custom_page.dart';
 
@@ -6,6 +7,10 @@ enum SportSwitch {
   ifsc,
   wimbledon,
 }
+
+Map<SportSwitch, SportData> sports = {
+  SportSwitch.ifsc: ifsc,
+};
 
 class SportTab {
   final IconData icon;

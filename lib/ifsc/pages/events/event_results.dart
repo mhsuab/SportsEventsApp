@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sports/ifsc/data/events.dart';
 import 'package:sports/utils/base_single_page.dart';
+
+import 'package:sports/ifsc/data/events.dart';
 
 class EventResultsPage extends BaseSinglePage {
   EventResultsPage({

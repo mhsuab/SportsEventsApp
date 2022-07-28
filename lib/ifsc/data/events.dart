@@ -47,14 +47,13 @@ class LeagueInfo {
 class Events {
   final int id;
   final String name;
-  final String? display;
   final String url;
   final DateTimeRange date;
   final List<Discipline> disciplines;
   final List<Event> round;
-  const Events(
-      this.id, this.name, this.url, this.date, this.disciplines, this.round,
-      {this.display});
+  final String display;
+  const Events(this.id, this.name, this.url, this.date, this.disciplines,
+      this.round, this.display);
 
   factory Events.fromJson(Map<String, dynamic> json) {
     List<Event> localEvents = json['d_cats']
@@ -75,7 +74,7 @@ class Events {
       ),
       localDisciplines,
       localEvents,
-      display: (name.length >= 25) ? "${name.substring(0, 22)}..." : name,
+      (name.length >= 26) ? "${name.substring(0, 23)}..." : name,
     );
   }
 
@@ -88,7 +87,10 @@ class Events {
             end: DateTime.now()),
         [],
         [],
+        "",
       );
+
+  bool isEvents() => (id != -1);
 
   @override
   String toString() {
@@ -96,6 +98,7 @@ class Events {
   }
 
   String toLocalDateString() {
+    if (id == -1) return '';
     final df = DateFormat('yyyy-MM-dd HH:mm');
     return "${df.format(date.start.toLocal())} - ${df.format(date.end.toLocal())}";
   }

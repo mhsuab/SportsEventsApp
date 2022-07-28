@@ -9,6 +9,7 @@ class EventsDropdown extends StatefulWidget {
   final List<SeasonsInfo>? items;
   final Function(int)? onSeasonTap;
   final Function(int)? onLeagueTap;
+  final Function()? closeDropdown;
   final Function(String)? toggle;
   final Function()? tapOpen;
   final Function()? tapClose;
@@ -21,6 +22,7 @@ class EventsDropdown extends StatefulWidget {
     this.size,
     this.onSeasonTap,
     this.onLeagueTap,
+    this.closeDropdown,
     this.toggle,
     this.tapOpen,
     this.tapClose,

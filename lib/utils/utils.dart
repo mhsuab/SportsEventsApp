@@ -6,4 +6,3 @@ export 'dropdown.dart';
 export 'loader.dart';
 export 'page_manager.dart';
 export 'struct.dart';
-export 'switch.dart';
