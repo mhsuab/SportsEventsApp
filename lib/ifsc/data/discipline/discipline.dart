@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sports/ifsc/network.dart';
 import 'package:sports/ifsc/pages/pages.dart';
 import 'package:sports/ifsc/data/athletes.dart';
+import 'package:sports/utils/utils.dart';
 
 import 'boulder.dart';
 
@@ -38,6 +39,21 @@ class DisciplineTypeNWidgets<S extends Athlete, T, U> {
       getIfscData(url, 'ranking', generator);
   AthleteList<S> getAthleteList(List<S> athletes) =>
       AthleteList<S>(athletes, getRoundRanking);
+
+  Widget listDisplay(bool isLoading, List<S>? items) => ListDisplay<S>(
+        isLoading: isLoading,
+        skeletonListItem: () => const RankingTile(
+          rank: 1,
+          country: 'JPN',
+          roundStatus: RoundPart.semifinalist,
+        ),
+        listItem: (a) => const RankingTile(
+          rank: 1,
+          country: 'JPN',
+          roundStatus: RoundPart.finalist,
+        ),
+        items: items,
+      );
 }
 
 Map<Discipline, DisciplineTypeNWidgets> resultMapping = {
