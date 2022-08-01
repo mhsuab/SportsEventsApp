@@ -2,7 +2,8 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sports/ifsc/discipline/discipline.dart';
+
+import 'package:sports/ifsc/pages/pages.dart';
 
 class SeasonsInfo {
   final int id;
@@ -102,6 +103,10 @@ class Events {
     final df = DateFormat('yyyy-MM-dd HH:mm');
     return "${df.format(date.start.toLocal())} - ${df.format(date.end.toLocal())}";
   }
+
+  Event getRound(bool isFemale, Discipline discipline) =>
+      round.singleWhere((event) =>
+          (event.isFemale == isFemale && event.discipline == discipline));
 }
 
 class Event {
@@ -114,6 +119,9 @@ class Event {
   final List<CatRound> cats;
   const Event(this.id, this.name, this.discipline, this.isFemale, this.status,
       this.resultUrl, this.cats);
+
+  factory Event.dummy() => const Event(
+      -1, '', Discipline.combined, true, IfscStatus.pending, '', []);
 
   factory Event.fromJson(Map<String, dynamic> json) {
     final name = json['name'].split(' ');
@@ -134,6 +142,9 @@ class Event {
   // FIX: not sure about which status has result
   bool hasResult() =>
       (status == IfscStatus.active || status == IfscStatus.finished);
+
+  @override
+  String toString() => name;
 }
 
 class CatRound {
@@ -144,7 +155,7 @@ class CatRound {
   const CatRound(this.name, this.roundId, this.status, this.resultUrl);
 
   factory CatRound.fromJson(Map<String, dynamic> json) => CatRound(
-      (json['name'] == 'Final')
+      (json['name'].toLowerCase() == 'final')
           ? 'final'
           : json['name'].substring(0, 4).toLowerCase(),
       json['category_round_id'],

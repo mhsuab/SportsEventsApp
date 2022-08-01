@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sports/utils/base_single_page.dart';
 
-import 'package:sports/ifsc/discipline/discipline.dart';
 import 'package:sports/ifsc/pages/pages.dart';
 import 'package:sports/utils/page_manager.dart';
 
@@ -55,9 +54,6 @@ class _ResultPageState extends State<ResultPage> {
       child: Stack(
         alignment: Alignment.center, //指定未定位或部分定位widget的对齐方式
         children: <Widget>[
-          Container(
-            color: Theme.of(context).primaryColor, //.withAlpha(200),
-          ),
           Positioned(
               top: 100,
               child: ElevatedButton(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sports/ifsc/discipline/discipline_display.dart';
+
+import 'package:sports/ifsc/pages/pages.dart';
 
 class EventTags extends StatelessWidget {
   final List<Discipline> _tags;

@@ -1,14 +1,14 @@
 import 'dart:ui';
 
-import 'package:skeletons/skeletons.dart';
 import 'package:sports/ifsc/network.dart';
 import 'package:flutter/material.dart';
+import 'package:sports/ifsc/pages/events/skeletons.dart';
 import 'package:sports/utils/utils.dart';
 
 import 'package:sports/ifsc/data/events.dart';
 
 import 'events_dropdown.dart';
-import 'events_list.dart';
+import 'event_tile.dart';
 
 class EventPage extends BaseSinglePage {
   const EventPage({
@@ -28,7 +28,6 @@ class EventsResult extends StatefulWidget {
 }
 
 class _EventsResultState extends State<EventsResult> {
-  final double dropdownSize = 30.0;
   List<SeasonsInfo>? items;
   List<Events>? events;
   bool _isLoading = true;
@@ -52,11 +51,14 @@ class _EventsResultState extends State<EventsResult> {
   void toggleLoad(String url) async {
     setState(() => _isLoading = true);
     setState(() => events?.clear());
-    final List<Events>? result =
+    final List<Events> result =
         await getIfscData(url, 'events', Events.fromJson);
     setState(() => events = result);
     setState(() => _isLoading = false);
   }
+
+  Widget getSkeleton() => const EventTileSkeleton();
+  Widget getListItem(Events event) => EventTile(event: event);
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +67,17 @@ class _EventsResultState extends State<EventsResult> {
       fit: StackFit.expand,
       children: [
         Positioned.fill(
-          top: dropdownSize,
+          top: headerSize,
           child: IgnorePointer(
             ignoring: _isIgnored,
             child: Container(
               padding: const EdgeInsets.only(top: 10),
-              child: EventList(
-                events: events,
+              child: ListDisplay<Events>(
                 isLoading: _isLoading,
+                skeletonListItem: getSkeleton,
+                listItem: getListItem,
+                items: events,
+                skeletonLength: 9,
               ),
             ),
           ),
@@ -91,7 +96,7 @@ class _EventsResultState extends State<EventsResult> {
         ),
         EventsDropdown(
           items: items,
-          size: dropdownSize,
+          size: headerSize,
           initSeasonIdx: 0,
           initLeagueIdx: 0,
           toggle: toggleLoad,

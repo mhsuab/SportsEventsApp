@@ -33,13 +33,6 @@ class BottomBarCollection extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SportButton(
-                splash: pageManager.data.splash,
-                buttonImage: pageManager.data.logo,
-                onTap: () => Provider.of<PageManager>(context, listen: false)
-                    .toggleBar(),
-                disabled: (sports.length <= 1),
-              ),
               ...pageManager.data.items
                   .asMap()
                   .map(
@@ -56,6 +49,13 @@ class BottomBarCollection extends StatelessWidget {
                   )
                   .values
                   .toList(),
+              SportButton(
+                splash: pageManager.data.splash,
+                buttonImage: pageManager.data.logo,
+                onTap: () => Provider.of<PageManager>(context, listen: false)
+                    .toggleBar(),
+                disabled: (sports.length <= 1),
+              ),
             ],
           ),
           pageManager.isOpened

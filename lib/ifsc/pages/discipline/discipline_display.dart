@@ -80,12 +80,6 @@ class DisciplineDisplay extends StatelessWidget {
                   ),
                   child: Icon(
                     isFemale ? Icons.female : Icons.male,
-                    shadows: const [
-                      Shadow(
-                          offset: Offset(2, 0.7),
-                          blurRadius: 10,
-                          color: Colors.black12)
-                    ],
                   ),
                 )),
             ElevatedButton(
@@ -101,12 +95,6 @@ class DisciplineDisplay extends StatelessWidget {
                 disciplineMapping[selected]!.name,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                        offset: Offset(2, 0.7),
-                        blurRadius: 10,
-                        color: Colors.black12)
-                  ],
                 ),
               ),
             )
